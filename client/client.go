@@ -33,38 +33,92 @@ func checkIP(ip, port string) bool {
 	return false
 }
 
-func checkDir(src string) (bool, error) {
-	f, err := os.Stat(src)
-	if err != nil {
-		return false, err
-	}
-	return f.IsDir(), nil
-}
-
 func (c *Client) sendFile(src string) {
 	conn, err := net.Dial("tcp", c.IPAddr)
 	if err != nil {
 		log.Fatalln(err)
-		return
 	}
 	infoChan = make(chan string)
 	log.Println("Start")
-	go sendHandler(conn, src)
+	mode := &headinfo.ModeInfo{
+		Mode:     headinfo.ModeFile,
+		BasePath: filepath.Dir(src)}
+	go sendHandler(conn, src, mode)
 	log.Println(<-infoChan)
 	log.Println("All finished, exiting...")
 }
 
 //TODO
 func (c *Client) sendDir(src string) {
-	//TODO
+	files, dirs := getDirInfo(src)
+	infoChan = make(chan string, 5)
+	//Start send
+	log.Println("Start")
+	//establish directory structure in the server
+	for _, dir := range dirs {
+		conn, err := net.Dial("tcp", c.IPAddr)
+		if err != nil {
+			log.Fatalln(err)
+		}
+		mode := &headinfo.ModeInfo{
+			Mode:     headinfo.ModeDir,
+			BasePath: filepath.Dir(src)}
+		establishHandler(conn, dir, mode)
+	}
+	//Waiting for establishing
+	for range dirs {
+		<-infoChan
+	}
+	log.Println("Directory structure established successfully")
+	//Send files
+	for _, file := range files {
+		conn, err := net.Dial("tcp", c.IPAddr)
+		if err != nil {
+			log.Fatalln(err)
+		}
+		mode := &headinfo.ModeInfo{
+			Mode:     headinfo.ModeDir,
+			BasePath: filepath.Dir(src)}
+		go sendHandler(conn, file, mode)
+	}
+	for range files {
+		log.Println(<-infoChan)
+	}
+	log.Println("All finished, exiting...")
 }
 
-func sendHandler(conn net.Conn, src string) {
+//Handler for establishing dirs in server
+func establishHandler(conn net.Conn, dir string, mode *headinfo.ModeInfo) {
 	//Error handling
 	var err error = nil
 	defer func() {
 		if err != nil && err != io.EOF {
-			infoChan <- fmt.Sprintf(`"%s": file send failed! error: %v`, src, err)
+			infoChan <- fmt.Sprintf(`"%s": Fail to establish directory structure ! error: %v`, dir, err)
+		}
+	}()
+	defer conn.Close()
+	//Get ready to go
+	dirInfo := headinfo.NewHeadInfo()
+	ds, err := os.Stat(dir)
+	if err != nil {
+		return
+	}
+	dirInfo.Init(ds, dir, mode)
+	err = dirInfo.Send(conn)
+	if err != nil {
+		return
+	}
+	//finished
+	infoChan <- "f"
+}
+
+//Handler for sending file
+func sendHandler(conn net.Conn, src string, mode *headinfo.ModeInfo) {
+	//Error handling
+	var err error = nil
+	defer func() {
+		if err != nil && err != io.EOF {
+			infoChan <- fmt.Sprintf(`"%s": File send failed! error: %v`, src, err)
 		}
 	}()
 	defer conn.Close()
@@ -81,7 +135,7 @@ func sendHandler(conn net.Conn, src string) {
 		return
 	}
 	//Get file's headinfo
-	h.Init(fs)
+	h.Init(fs, src, mode)
 	//Send headinfo to server
 	err = h.Send(conn)
 	if err != nil {

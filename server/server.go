@@ -7,6 +7,7 @@ import (
 	"log"
 	"net"
 	"os"
+	"path/filepath"
 	"strconv"
 )
 
@@ -23,11 +24,11 @@ func receiveHandler(conn net.Conn, dist string) {
 	defer conn.Close()
 	h := headinfo.NewHeadInfo()
 	h.Waiting(conn)
-	os.MkdirAll(dist, os.ModePerm)
 	if h.IsDir == true {
-		//TODO
+		os.MkdirAll(dist+h.Name, os.ModePerm)
 		return
 	}
+	os.MkdirAll(dist+filepath.Dir(h.Name), os.ModePerm)
 	path := setFileName(dist + h.Name)
 	f, err := os.Create(path)
 	defer f.Close()

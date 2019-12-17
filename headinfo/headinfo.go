@@ -2,11 +2,29 @@ package headinfo
 
 import (
 	"bytes"
+	"log"
 	"net"
 	"os"
+	"path/filepath"
 	"strconv"
 	"time"
 )
+
+//SendMode defined the mode to send
+type SendMode uint8
+
+const (
+	//ModeFile to send a file
+	ModeFile SendMode = 1
+	//ModeDir to send a Dir
+	ModeDir SendMode = 2
+)
+
+//ModeInfo defined the file's send mode, including baed path
+type ModeInfo struct {
+	Mode     SendMode
+	BasePath string
+}
 
 //HeadInfo defined a file's head infomation
 type HeadInfo struct {
@@ -21,8 +39,16 @@ func NewHeadInfo() *HeadInfo {
 }
 
 //Init initiation a headinfo type
-func (h *HeadInfo) Init(f os.FileInfo) {
-	h.Name = f.Name()
+func (h *HeadInfo) Init(f os.FileInfo, src string, mode *ModeInfo) {
+	if mode.Mode == ModeDir {
+		relPath, err := filepath.Rel(mode.BasePath, src)
+		if err != nil {
+			log.Fatalln(err)
+		}
+		h.Name = relPath
+	} else {
+		h.Name = f.Name()
+	}
 	h.Size = f.Size()
 	h.IsDir = f.IsDir()
 }
