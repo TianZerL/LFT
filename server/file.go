@@ -7,6 +7,7 @@ import (
 	"strings"
 )
 
+//Set file name, if there is a same name file here, rename new file ot add a (1)
 func setFileName(path string) string {
 	path, err := filepath.Abs(filepath.Clean(path))
 	if err != nil {

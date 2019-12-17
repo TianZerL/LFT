@@ -48,7 +48,6 @@ func (c *Client) sendFile(src string) {
 	log.Println("All finished, exiting...")
 }
 
-//TODO
 func (c *Client) sendDir(src string) {
 	files, dirs := getDirInfo(src)
 	infoChan = make(chan string, 5)

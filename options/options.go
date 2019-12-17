@@ -17,10 +17,10 @@ type Opt struct {
 var options Opt
 
 func init() {
-	flag.BoolVar(&options.Server, "w", false, "Enable the server model")
-	flag.BoolVar(&options.Scan, "scan", false, "Scan Lan to find servers")
-	flag.BoolVar(&options.Help, "h", false, "Display help infomation")
-	flag.BoolVar(&options.Help, "?", false, "Display help infomation")
+	flag.BoolVar(&options.Server, "w", false, "Start a server")
+	flag.BoolVar(&options.Scan, "scan", false, "Scan Lan to find servers(TODO)")
+	flag.BoolVar(&options.Help, "h", false, "Display help information")
+	flag.BoolVar(&options.Help, "?", false, "Display help information")
 	flag.StringVar(&options.IP, "ip", "0.0.0.0", "Server IP address")
 	flag.StringVar(&options.Port, "port", "6981", "Server Port")
 	flag.StringVar(&options.Dist, "d", "./receive/", "Source or destination")

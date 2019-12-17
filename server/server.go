@@ -19,15 +19,16 @@ type Server struct {
 //set bufSize
 const bufSize int = 4096
 
-//TODO
 func receiveHandler(conn net.Conn, dist string) {
 	defer conn.Close()
 	h := headinfo.NewHeadInfo()
 	h.Waiting(conn)
+	//Creat empty dir
 	if h.IsDir == true {
 		os.MkdirAll(dist+h.Name, os.ModePerm)
 		return
 	}
+	//Creat all necessary dirs
 	os.MkdirAll(dist+filepath.Dir(h.Name), os.ModePerm)
 	path := setFileName(dist + h.Name)
 	f, err := os.Create(path)
