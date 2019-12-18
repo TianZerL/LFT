@@ -5,7 +5,8 @@ It can be called as *LAN files transferor* :joy:.
 # Feature
 - [x] Send a file
 - [x] Send directory
-- [ ] Scan server
+- [x] Scan server
+- [ ] GUI
 
 # Example
 Start a server:  
@@ -14,29 +15,59 @@ Send a file:
 ![How to send a file](example/sendFile.gif)
 Send a directory
 ![How to send a directory](example/sendDir.gif)
+Scan servers:
+![How to scan servers](example/scanServers.gif)
 
 # Usage
-Start a server  
+## Start a server
+Quick start:
 ```
 LFT -w  
 ```
-Send a file or directory  
+Set a name to your server:  
+```
+LFT -w -name [your name] 
+```
+Specify port:  
+```
+LFT -w -port [specify port]
+```
+Specify listening IP:
+```
+LFT -w -ip [specify IP]
+```
+## Send a file or directory
+Quick start:
 ```
 LFT -d [source path] -ip [server ip]  
 ```
-More argument 
+Specify port:  
 ```
-    -?    Display help information
-    -d string
-            Source or destination (default "./receive/")
-    -h    Display help information
-    -ip string
-            Server IP address (default "0.0.0.0")
-    -port string
-            Server Port (default "6981")
-    -scan
-            Scan Lan to find servers(TODO)
-    -w    Start a server
+LFT -d [source path] -ip [server ip] -port [specify port]
+```
+## Scan servers
+```
+LFT -scan -ip [destination IP list] -port [destination port list]
+```
+**Attention**:  
+In IP list and port list, use "," to separate. For example, you can input ***"192.168.1.1,192.168.2.1,192.168.3.1"*** and ***"6981,6980,6979"*** etc.  
+The LFT will automatically scan the IP segment of each inputted ip and port. For example, inputting ***"192.168.12.1"*** means to scan ***"192.168.1.0"*** to ***"192.168.1.255"***.  
+The port can be defaulted, it will be the default port ***6981***.
+## More arguments
+```
+  -?    Display help information
+  -d string
+        Source or destination (default "./receive/")
+  -h    Display help information
+  -ip string
+        Server IP address (default "0.0.0.0")
+  -name string
+        Set a name to your server (default "LFT-Server")
+  -port string
+        Server Port (default "6981")
+  -scan
+        Scan Lan to find servers
+  -w    Start a server
 ```
 
 # Install

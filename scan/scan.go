@@ -77,7 +77,7 @@ func sayHelloHandler(conn net.Conn) {
 //Scan the specified IP segments and ports
 func (s *Scanner) Scan() {
 	//IP
-	log.Println("Start scan server")
+	log.Println("Start scan servers")
 	for _, ip := range s.IPs {
 		ipInfo := strings.SplitAfter(ip, ".")
 		//port

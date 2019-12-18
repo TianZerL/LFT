@@ -19,7 +19,7 @@ var options Opt
 
 func init() {
 	flag.BoolVar(&options.Server, "w", false, "Start a server")
-	flag.BoolVar(&options.Scan, "scan", false, "Scan Lan to find servers(TODO)")
+	flag.BoolVar(&options.Scan, "scan", false, "Scan Lan to find servers")
 	flag.BoolVar(&options.Help, "h", false, "Display help information")
 	flag.BoolVar(&options.Help, "?", false, "Display help information")
 	flag.StringVar(&options.IP, "ip", "0.0.0.0", "Server IP address")
