@@ -13,7 +13,7 @@ Start a server:
 ![How to start a server](example/server.gif)
 Send a file:
 ![How to send a file](example/sendFile.gif)
-Send a directory
+Send directory:
 ![How to send a directory](example/sendDir.gif)
 Scan servers:
 ![How to scan servers](example/scanServers.gif)

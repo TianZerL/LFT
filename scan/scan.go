@@ -69,10 +69,9 @@ func sayHelloHandler(conn net.Conn) {
 		log.Println(err)
 		return
 	}
+	//Waiting for callback message
 	n, err := conn.Read(callBack)
-	conn.RemoteAddr()
 	if err != nil {
-		log.Println(err)
 		return
 	}
 	lock.Lock()
