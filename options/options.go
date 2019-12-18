@@ -9,6 +9,7 @@ type Opt struct {
 	IP     string
 	Port   string
 	Dist   string
+	Name   string
 	Server bool
 	Scan   bool
 	Help   bool
@@ -24,6 +25,7 @@ func init() {
 	flag.StringVar(&options.IP, "ip", "0.0.0.0", "Server IP address")
 	flag.StringVar(&options.Port, "port", "6981", "Server Port")
 	flag.StringVar(&options.Dist, "d", "./receive/", "Source or destination")
+	flag.StringVar(&options.Name, "name", "LFT-Server", "Set a name to your server")
 	flag.Parse()
 }
 

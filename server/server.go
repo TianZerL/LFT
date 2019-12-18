@@ -14,10 +14,43 @@ import (
 //Server for receiving
 type Server struct {
 	IPAddr string
+	Name   string
 }
 
 //set bufSize
 const bufSize int = 4096
+
+//sayHelloBack will send a response to the scanner
+func sayHelloBack(addr, name string) {
+	//Listing scanner
+	lAddr, err := net.ResolveUDPAddr("udp", addr)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	l, err := net.ListenUDP("udp", lAddr)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	defer l.Close()
+	buf := make([]byte, 64)
+	for {
+		//Waiting for scanner send a Hello
+		n, rAddr, err := l.ReadFromUDP(buf)
+		if err != nil {
+			log.Println(err)
+			continue
+		}
+		data := string(buf[:n])
+		if data == "Hello" {
+			//Send back server name
+			_, err := l.WriteToUDP([]byte(name), rAddr)
+			if err != nil {
+				log.Println(err)
+				continue
+			}
+		}
+	}
+}
 
 func receiveHandler(conn net.Conn, dist string) {
 	defer conn.Close()
@@ -62,16 +95,17 @@ func checkIP(ip, port string) bool {
 }
 
 //NewServer will Creat a server
-func NewServer(ip, port string) (*Server, error) {
+func NewServer(name, ip, port string) (*Server, error) {
 	if checkIP(ip, port) == false {
 		return nil, errors.New("illegal IP addres")
 	}
-	return &Server{IPAddr: ip + ":" + port}, nil
+	return &Server{IPAddr: ip + ":" + port, Name: name}, nil
 }
 
 //Waiting for receiving
 func (s *Server) Waiting(dist string) {
 	dist += "/"
+	go sayHelloBack(s.IPAddr, s.Name)
 	l, err := net.Listen("tcp", s.IPAddr)
 	if err != nil {
 		log.Fatalln(err)
@@ -82,6 +116,7 @@ func (s *Server) Waiting(dist string) {
 		conn, err := l.Accept()
 		if err != nil {
 			log.Println(err)
+			continue
 		}
 		go receiveHandler(conn, dist)
 	}

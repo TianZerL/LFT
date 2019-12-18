@@ -50,7 +50,7 @@ func (c *Client) sendFile(src string) {
 
 func (c *Client) sendDir(src string) {
 	files, dirs := getDirInfo(src)
-	infoChan = make(chan string, 5)
+	infoChan = make(chan string, 20)
 	//Start send
 	log.Println("Start")
 	//establish directory structure in the server

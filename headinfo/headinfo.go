@@ -62,7 +62,7 @@ func (h *HeadInfo) Send(conn net.Conn) error {
 		return err
 	}
 	re := make([]byte, 6)
-	err = conn.SetReadDeadline(time.Now().Add(20 * time.Second))
+	err = conn.SetReadDeadline(time.Now().Add(10 * time.Second))
 	if err != nil {
 		return err
 	}
