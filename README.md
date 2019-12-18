@@ -26,7 +26,7 @@ LFT -w
 ```
 Set a name to your server:  
 ```
-LFT -w -name [your name] 
+LFT -w -name [your server name] 
 ```
 Specify port:  
 ```
@@ -50,8 +50,8 @@ LFT -d [source path] -ip [server ip] -port [specify port]
 LFT -scan -ip [destination IP list] -port [destination port list]
 ```
 **Attention**:  
-In IP list and port list, use "," to separate. For example, you can input ***"192.168.1.1,192.168.2.1,192.168.3.1"*** and ***"6981,6980,6979"*** etc.  
-The LFT will automatically scan the IP segment of each inputted ip and port. For example, inputting ***"192.168.12.1"*** means to scan ***"192.168.1.0"*** to ***"192.168.1.255"***.  
+In IP list and port list, use ***","*** to separate. For example, you can input ***"192.168.1.1,192.168.2.1,192.168.3.1"*** and ***"6981,6980,6979"*** etc.  
+The LFT will automatically scan the IP segment of each inputted ip and port. For example, inputting ***"192.168.1.1"*** means to scan ***"192.168.1.0"*** to ***"192.168.1.255"***.  
 The port can be defaulted, it will be the default port ***6981***.
 ## More arguments
 ```
