@@ -60,13 +60,19 @@ func sayHelloHandler(conn net.Conn) {
 	Addr := conn.RemoteAddr()
 	_, err := conn.Write([]byte{'H', 'e', 'l', 'l', 'o'})
 	if err != nil {
+		log.Println(err)
 		return
 	}
 	callBack := make([]byte, 64)
-	conn.SetReadDeadline(time.Now().Add(10 * time.Second))
+	err = conn.SetReadDeadline(time.Now().Add(10 * time.Second))
+	if err != nil {
+		log.Println(err)
+		return
+	}
 	n, err := conn.Read(callBack)
 	conn.RemoteAddr()
 	if err != nil {
+		log.Println(err)
 		return
 	}
 	lock.Lock()
