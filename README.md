@@ -6,7 +6,7 @@ It can be called as *LAN files transferor* :joy:.
 - [x] Send a file
 - [x] Send directory
 - [x] Scan server
-- [ ] GUI
+- [x] [GUI](https://github.com/TianZerL/LFT-gui)
 
 # Example
 Start a server:  
