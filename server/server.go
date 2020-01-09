@@ -1,7 +1,6 @@
 package server
 
 import (
-	"LFT/headinfo"
 	"errors"
 	"io"
 	"log"
@@ -9,6 +8,8 @@ import (
 	"os"
 	"path/filepath"
 	"strconv"
+
+	"github.com/TianZerL/LFT/headinfo"
 )
 
 //Server for receiving

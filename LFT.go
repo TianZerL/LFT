@@ -1,11 +1,12 @@
 package main
 
 import (
-	"LFT/client"
-	"LFT/options"
-	"LFT/scan"
-	"LFT/server"
 	"log"
+
+	"github.com/TianZerL/LFT/client"
+	"github.com/TianZerL/LFT/options"
+	"github.com/TianZerL/LFT/scan"
+	"github.com/TianZerL/LFT/server"
 )
 
 func main() {

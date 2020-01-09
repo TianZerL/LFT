@@ -1,7 +1,6 @@
 package client
 
 import (
-	"LFT/headinfo"
 	"errors"
 	"fmt"
 	"io"
@@ -10,6 +9,8 @@ import (
 	"os"
 	"path/filepath"
 	"strconv"
+
+	"github.com/TianZerL/LFT/headinfo"
 )
 
 //Client for send files
